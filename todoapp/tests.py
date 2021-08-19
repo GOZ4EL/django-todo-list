@@ -1,3 +1,11 @@
 from django.test import TestCase
+from django.urls import reverse
 
-# Create your tests here.
+from .models import TodoListItem
+
+class TodoAppView(TestCase):
+    def test_view_todo_items_list_is_showed(self):
+        todoitem = TodoListItem.objects.create(content="Test Item.")
+        response = self.client.get('/todoapp/')
+        self.assertQuerysetEqual(response.context['all_items'], [todoitem])
+
