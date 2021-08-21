@@ -19,3 +19,10 @@ def addTodoView(request):
     new_item = TodoListItem(content=x)
     new_item.save()
     return HttpResponseRedirect('/todoapp/')
+
+
+def deleteTodoView(request, i):
+    """Action for deleting a todo item."""
+    item = TodoListItem.objects.get(id=i)
+    item.delete()
+    return HttpResponseRedirect('/todoapp/')
