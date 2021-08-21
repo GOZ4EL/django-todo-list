@@ -19,3 +19,14 @@ class TodoAppView(TestCase):
         self.client.post('/addTodoItem/', {'content': content})
         response = self.client.get('/todoapp/')
         self.assertContains(response, content)
+
+    def test_view_todo_list_item_is_deleted(self):
+        """
+        The selected item is deleted whenever post request is made to the
+        '/deleteTodoItem/{id}' dir being id the item object's id.
+        """
+        todoitem = TodoListItem.objects.create(content="Item to be deleted.")
+        self.client.post(f'/deleteTodoItem/{todoitem.id}/')
+        response = self.client.get('/todoapp/')
+        self.assertQuerysetEqual(response.context['all_items'], [],)
+
